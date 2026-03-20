@@ -9,365 +9,330 @@
 
   body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: #f0f4f8;
-    color: #1a2332;
+    background: #e8f0f4;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     min-height: 100vh;
+    padding: 20px;
   }
 
-  header {
-    background: linear-gradient(135deg, #1a2332 0%, #2d4a7a 100%);
-    color: white;
-    padding: 28px 40px 20px;
+  .slide {
+    position: relative;
+    width: 100%;
+    max-width: 1440px;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(160deg, #b8e0fa 0%, #d0ebfb 30%, #b8dffb 50%, #a6d4f7 70%, #d5edfc 100%);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.15);
   }
 
-  header .eyebrow {
-    font-size: 11px;
+  /* All children positioned absolutely within the slide */
+  .slide > * { position: absolute; }
+
+  /* Eyebrow */
+  .eyebrow {
+    left: 2.5%; top: 4%;
+    font-size: clamp(8px, 0.85vw, 12px);
+    font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: #7eb8f7;
-    margin-bottom: 6px;
+    color: #65717C;
   }
+  .eyebrow .dot { color: #1077D7; }
 
-  header h1 {
-    font-size: 26px;
+  /* Title */
+  .title {
+    left: 2.5%; top: 8.5%;
+    font-size: clamp(14px, 1.8vw, 26px);
     font-weight: 600;
+    color: #181818;
   }
 
-  .legend {
-    display: flex;
-    gap: 24px;
-    padding: 14px 40px;
-    background: #fff;
-    border-bottom: 1px solid #dde3ea;
-    font-size: 13px;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-  }
-
-  .legend-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-  }
-
-  .dot-patient   { background: #3b82f6; }
-  .dot-member    { background: #8b5cf6; }
-  .dot-provider  { background: #10b981; }
-  .dot-both      { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
-
-  .journey {
-    display: flex;
-    gap: 0;
-    padding: 30px 20px 40px;
-    overflow-x: auto;
-  }
-
-  .phase {
-    flex: 1;
-    min-width: 270px;
-    position: relative;
-  }
-
-  .phase:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: #cbd5e1;
-  }
-
-  .phase-header {
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 0 10px;
-  }
-
-  .phase-label {
-    display: inline-block;
-    background: #1a2332;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 10px 22px;
-    border-radius: 6px;
-  }
-
-  .phase-items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    padding: 0 12px;
-  }
-
-  .journey-box {
-    background: #fff;
-    border: 2px solid #dde3ea;
-    border-radius: 8px;
-    padding: 14px 16px;
-    width: calc(50% - 5px);
-    min-height: 70px;
+  /* Journey boxes - common styles */
+  .box {
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-size: 13px;
+    border-radius: 12%;
+    font-size: clamp(7px, 0.7vw, 11px);
     font-weight: 500;
-    line-height: 1.35;
+    line-height: 1.3;
     cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    border-left: 4px solid transparent;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    padding: 2%;
+  }
+  .box:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 10;
+    filter: brightness(1.05);
   }
 
-  .journey-box:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-    border-color: #93b4e8;
+  /* Box color categories */
+  .box-patient { background: #FFFFFF; color: #181818; }
+  .box-member { background: #57A0E3; color: #FFFFFF; }
+  .box-payer { background: #0C5EAB; color: #FFFFFF; }
+  .box-gradient {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F0F6F9 50%, #57A0E3 100%);
+    color: #181818;
   }
 
-  .journey-box.cat-patient   { border-left-color: #3b82f6; }
-  .journey-box.cat-member    { border-left-color: #8b5cf6; }
-  .journey-box.cat-provider  { border-left-color: #10b981; }
-  .journey-box.cat-both      { border-left-color: #6d8ff0; }
-
-  .journey-box.active {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
-  }
-
-  /* Arrow between phases */
-  .phase-arrow {
+  /* Phase labels */
+  .phase-label {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    min-width: 30px;
-    font-size: 22px;
-    color: #94a3b8;
-    padding-top: 40px;
-  }
-
-  /* Popup overlay */
-  .popup-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 100;
-    justify-content: center;
-    align-items: center;
-    animation: fadeIn 0.2s ease;
-  }
-
-  .popup-overlay.visible {
-    display: flex;
-  }
-
-  .popup {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    max-width: 520px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    animation: slideUp 0.25s ease;
-  }
-
-  .popup-header {
-    padding: 22px 28px 16px;
-    border-bottom: 1px solid #e5e9f0;
-  }
-
-  .popup-phase {
-    font-size: 10px;
-    letter-spacing: 1.8px;
-    text-transform: uppercase;
-    color: #6b7fa3;
-    margin-bottom: 4px;
-  }
-
-  .popup-title {
-    font-size: 20px;
+    text-align: center;
+    border-radius: 17%;
+    font-size: clamp(7px, 0.72vw, 11px);
     font-weight: 700;
-    color: #1a2332;
-  }
-
-  .popup-body {
-    padding: 20px 28px 28px;
-  }
-
-  .popup-body h4 {
-    font-size: 12px;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: #3b82f6;
-    margin-bottom: 10px;
+    color: #FFFFFF;
+    line-height: 1.25;
+    padding: 2%;
   }
 
-  .popup-body p {
-    font-size: 14px;
-    line-height: 1.65;
+  /* SVG lines layer */
+  .lines-layer {
+    left: 0; top: 0; width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  /* Legend */
+  .legend-dot {
+    border-radius: 3px;
+  }
+  .legend-text {
+    font-size: clamp(7px, 0.7vw, 11px);
+    font-weight: 500;
+    color: #181818;
+  }
+
+  /* Horizontal legend line */
+  .legend-line {
+    height: 1px;
+    background: #65717C;
+  }
+
+  /* Tooltip */
+  #tooltip {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.08);
+    width: 340px;
+    max-height: 420px;
+    overflow-y: auto;
+    pointer-events: none;
+    animation: tooltipIn 0.18s ease;
+  }
+  #tooltip.visible { display: block; }
+
+  .tt-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid #e8edf3;
+  }
+  .tt-phase {
+    font-size: 9px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: #65717C;
+    margin-bottom: 3px;
+  }
+  .tt-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #181818;
+  }
+  .tt-body {
+    padding: 14px 20px 18px;
+  }
+  .tt-body h4 {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #1077D7;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .tt-body p {
+    font-size: 12.5px;
+    line-height: 1.6;
     color: #3d4f65;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
-
-  .popup-body ul {
-    margin: 0 0 16px 18px;
-    font-size: 14px;
-    line-height: 1.65;
+  .tt-body ul {
+    margin: 0 0 12px 16px;
+    font-size: 12px;
+    line-height: 1.55;
     color: #3d4f65;
   }
-
-  .popup-body ul li {
-    margin-bottom: 5px;
-  }
-
-  .popup-close {
-    position: absolute;
-    top: 16px;
-    right: 18px;
-    background: none;
-    border: none;
-    font-size: 22px;
-    color: #94a3b8;
-    cursor: pointer;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-  }
-
-  .popup-close:hover {
-    background: #f1f5f9;
-    color: #475569;
-  }
-
-  .kore-badge {
+  .tt-body ul li { margin-bottom: 4px; }
+  .tt-badge {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     background: #eef4ff;
-    color: #2563eb;
-    font-size: 11px;
+    color: #1077D7;
+    font-size: 10px;
     font-weight: 600;
-    padding: 4px 10px;
+    padding: 3px 8px;
     border-radius: 4px;
-    margin-top: 4px;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
+  @keyframes tooltipIn {
+    from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
-  }
-
-  @media (max-width: 900px) {
-    .journey { flex-direction: column; gap: 30px; }
-    .phase-arrow { display: none; }
-    .phase::after { display: none; }
-    .phase { min-width: unset; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="eyebrow">Use Case Time Series Mapping</div>
-  <h1>Delivering value across the entire patient journey</h1>
-</header>
+<div class="slide" id="slide">
 
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot dot-patient"></div> Patient</div>
-  <div class="legend-item"><div class="legend-dot dot-member"></div> Member</div>
-  <div class="legend-item"><div class="legend-dot dot-both"></div> Patient &amp; Member</div>
-  <div class="legend-item"><div class="legend-dot dot-provider"></div> Provider</div>
+  <!-- Eyebrow -->
+  <div class="eyebrow">USE CASE TIME SERIES MAPPING <span class="dot">&#9679;</span></div>
+
+  <!-- Title -->
+  <div class="title">Delivering value across the entire patient journey</div>
+
+  <!-- SVG layer for connecting lines and timeline dots -->
+  <svg class="lines-layer" viewBox="0 0 12189 6858" preserveAspectRatio="none">
+    <!-- Phase 1 upper stems (white) -->
+    <line x1="1713" y1="2784" x2="1713" y2="3358" stroke="#FFFFFF" stroke-width="12" opacity="0.85"/>
+    <line x1="2907" y1="2793" x2="2907" y2="3358" stroke="#FFFFFF" stroke-width="12" opacity="0.85"/>
+    <line x1="2310" y1="2058" x2="2310" y2="3358" stroke="#FFFFFF" stroke-width="12" opacity="0.85"/>
+    <line x1="3504" y1="2092" x2="3504" y2="3358" stroke="#FFFFFF" stroke-width="12" opacity="0.85"/>
+    <!-- Phase 1 lower stems (white) -->
+    <line x1="2609" y1="3448" x2="2609" y2="3965" stroke="#FFFFFF" stroke-width="12" opacity="0.85"/>
+    <line x1="3803" y1="3448" x2="3803" y2="3965" stroke="#FFFFFF" stroke-width="12" opacity="0.85"/>
+    <line x1="2012" y1="3448" x2="2012" y2="4723" stroke="#FFFFFF" stroke-width="12" opacity="0.85"/>
+    <line x1="3206" y1="3448" x2="3206" y2="4723" stroke="#FFFFFF" stroke-width="12" opacity="0.85"/>
+
+    <!-- Phase 2 upper stems (near-white) -->
+    <line x1="5498" y1="2784" x2="5498" y2="3358" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <line x1="6692" y1="2784" x2="6692" y2="3358" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <line x1="6095" y1="2058" x2="6095" y2="3358" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <line x1="7289" y1="2058" x2="7289" y2="3358" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <!-- Phase 2 lower stems -->
+    <line x1="6393" y1="3448" x2="6393" y2="3965" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <line x1="7587" y1="3448" x2="7587" y2="3965" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <line x1="5796" y1="3448" x2="5796" y2="4723" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <line x1="6990" y1="3448" x2="6990" y2="4723" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+
+    <!-- Phase 3-4 upper stems -->
+    <line x1="9282" y1="2773" x2="9282" y2="3358" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <line x1="9879" y1="2058" x2="9879" y2="3358" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <line x1="10476" y1="2773" x2="10476" y2="3358" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <!-- Phase 3-4 lower stems -->
+    <line x1="9580" y1="3448" x2="9580" y2="3965" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+    <line x1="10177" y1="3448" x2="10177" y2="4723" stroke="#F0F6F9" stroke-width="12" opacity="0.9"/>
+
+    <!-- Timeline dots - Phase 1 -->
+    <rect x="1667" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="1966" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="2264" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="2563" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="2862" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="3160" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="3459" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="3757" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+
+    <!-- Timeline dots - Phase 2 -->
+    <rect x="5452" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="5750" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="6049" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="6348" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="6646" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="6945" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="7244" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="7542" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+
+    <!-- Timeline dots - Phase 3-4 -->
+    <rect x="9236" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="9535" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="9833" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="10132" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+    <rect x="10430" y="3358" width="91" height="91" rx="6" fill="#181818"/>
+  </svg>
+
+  <!-- ============================================ -->
+  <!-- PHASE LABELS (middle band) -->
+  <!-- ============================================ -->
+  <div class="phase-label" style="left:2.224%;top:44.55%;width:9.756%;height:10.15%;background:#65717C;">BEFORE<br>THE VISIT</div>
+  <div class="phase-label" style="left:32.70%;top:44.55%;width:10.90%;height:10.15%;background:#181818;">AFTER<br>THE VISIT</div>
+  <div class="phase-label" style="left:64.32%;top:44.55%;width:9.756%;height:10.15%;background:#181818;">PATIENT DISCHARGE</div>
+  <div class="phase-label" style="left:88.02%;top:44.55%;width:9.756%;height:10.15%;background:#181818;">RECOVERY &amp; BEYOND</div>
+
+  <!-- ============================================ -->
+  <!-- ROW 1 BOXES (top row) -->
+  <!-- ============================================ -->
+  <div class="box box-gradient" style="left:15.89%;top:21.74%;width:6.124%;height:8.53%;" data-key="provider-search">Provider search</div>
+  <div class="box box-gradient" style="left:25.69%;top:21.74%;width:6.124%;height:8.53%;" data-key="id-card">ID Card Retrieval</div>
+  <div class="box box-member" style="left:46.94%;top:21.74%;width:6.124%;height:8.53%;" data-key="coverage-lookup">Coverage Lookup</div>
+  <div class="box box-patient" style="left:56.97%;top:21.74%;width:6.124%;height:8.53%;" data-key="lab-reports">Lab<br>reports</div>
+  <div class="box box-patient" style="left:77.99%;top:21.74%;width:6.124%;height:8.53%;" data-key="discharge-guidance">Discharge guidance</div>
+
+  <!-- ============================================ -->
+  <!-- ROW 2 BOXES -->
+  <!-- ============================================ -->
+  <div class="box box-patient" style="left:10.29%;top:32.79%;width:7.534%;height:8.53%;" data-key="appt-scheduling">Appointment Scheduling</div>
+  <div class="box box-gradient" style="left:20.79%;top:32.79%;width:6.124%;height:8.53%;" data-key="answers-support">Answers &amp; support</div>
+  <div class="box box-payer" style="left:41.04%;top:32.79%;width:7.534%;height:8.53%;" data-key="prior-auth">Prior Authorization Support</div>
+  <div class="box box-gradient" style="left:51.84%;top:32.79%;width:6.124%;height:8.53%;" data-key="copay-deductible">Co-pay &amp; Deductible</div>
+  <div class="box box-payer" style="left:73.39%;top:32.79%;width:5.824%;height:8.53%;" data-key="claims-status">Claims<br>status</div>
+  <div class="box box-patient" style="left:82.60%;top:32.79%;width:7.173%;height:8.53%;" data-key="post-visit">Post-visit<br>follow up</div>
+
+  <!-- ============================================ -->
+  <!-- ROW 3 BOXES -->
+  <!-- ============================================ -->
+  <div class="box box-patient" style="left:18.52%;top:57.83%;width:6.124%;height:8.53%;" data-key="symptom-triage">Symptom triage</div>
+  <div class="box box-patient" style="left:27.40%;top:57.83%;width:7.534%;height:8.53%;" data-key="reminders-directions">Reminders &amp; Directions</div>
+  <div class="box box-member" style="left:49.39%;top:57.83%;width:6.124%;height:8.53%;" data-key="eob">Explanation<br>of benefits</div>
+  <div class="box box-patient" style="left:58.48%;top:57.83%;width:7.534%;height:8.53%;" data-key="reminders-notif">Reminders &amp; notifications</div>
+  <div class="box box-payer" style="left:74.88%;top:57.83%;width:7.901%;height:8.53%;" data-key="claims-adjudication">Claims adjudication</div>
+
+  <!-- ============================================ -->
+  <!-- ROW 4 BOXES (bottom row) -->
+  <!-- ============================================ -->
+  <div class="box box-gradient" style="left:12.55%;top:68.88%;width:7.901%;height:8.53%;" data-key="user-auth">User authentication</div>
+  <div class="box box-patient" style="left:22.58%;top:68.88%;width:7.448%;height:8.53%;" data-key="pre-visit-reg">Pre-visit registration</div>
+  <div class="box box-payer" style="left:43.60%;top:68.88%;width:7.901%;height:8.53%;" data-key="eligibility">Eligibility<br>lookup</div>
+  <div class="box box-member" style="left:53.12%;top:68.88%;width:8.453%;height:8.53%;" data-key="oop-expenses">Out-of-pocket expense calculation &amp; limits</div>
+  <div class="box box-patient" style="left:79.78%;top:68.88%;width:7.448%;height:8.53%;" data-key="rx-refill">Prescription<br>Refill</div>
+
+  <!-- ============================================ -->
+  <!-- LEGEND -->
+  <!-- ============================================ -->
+  <div class="legend-dot" style="left:2.756%;top:84.93%;width:2.003%;height:3.342%;background:#FFFFFF;"></div>
+  <div class="legend-text" style="left:5.5%;top:85.6%;">Patient</div>
+
+  <div class="legend-dot" style="left:10.75%;top:84.93%;width:2.003%;height:3.342%;background:#57A0E3;"></div>
+  <div class="legend-text" style="left:13.49%;top:85.6%;">Member</div>
+
+  <div class="legend-dot" style="left:19.02%;top:84.93%;width:2.003%;height:3.342%;background:linear-gradient(135deg,#FFFFFF 0%,#F0F6F9 50%,#57A0E3 100%);"></div>
+  <div class="legend-text" style="left:22.11%;top:85.6%;">Patient &amp; Member</div>
+
+  <div class="legend-dot" style="left:31.31%;top:84.93%;width:2.003%;height:3.342%;background:#1077D7;"></div>
+  <div class="legend-text" style="left:34.06%;top:85.6%;">Provider</div>
+
+  <div class="legend-line" style="left:40.92%;top:86.71%;width:55.78%;"></div>
+
 </div>
 
-<div class="journey">
-
-  <!-- PHASE 1 -->
-  <div class="phase">
-    <div class="phase-header"><span class="phase-label">Before the Visit</span></div>
-    <div class="phase-items">
-      <div class="journey-box cat-patient" data-key="provider-search">Provider Search</div>
-      <div class="journey-box cat-member" data-key="id-card">ID Card Retrieval</div>
-      <div class="journey-box cat-patient" data-key="appt-scheduling">Appointment Scheduling</div>
-      <div class="journey-box cat-patient" data-key="answers-support">Answers &amp; Support</div>
-      <div class="journey-box cat-both" data-key="symptom-triage">Symptom Triage</div>
-      <div class="journey-box cat-both" data-key="reminders-directions">Reminders &amp; Directions</div>
-      <div class="journey-box cat-both" data-key="user-auth">User Authentication</div>
-      <div class="journey-box cat-both" data-key="pre-visit-reg">Pre-visit Registration</div>
-    </div>
+<!-- Tooltip -->
+<div id="tooltip">
+  <div class="tt-header">
+    <div class="tt-phase" id="ttPhase"></div>
+    <div class="tt-title" id="ttTitle"></div>
   </div>
-
-  <div class="phase-arrow">&#9654;</div>
-
-  <!-- PHASE 2 -->
-  <div class="phase">
-    <div class="phase-header"><span class="phase-label">After the Visit</span></div>
-    <div class="phase-items">
-      <div class="journey-box cat-member" data-key="coverage-lookup">Coverage Lookup</div>
-      <div class="journey-box cat-provider" data-key="lab-reports">Lab Reports</div>
-      <div class="journey-box cat-provider" data-key="prior-auth">Prior Authorization Support</div>
-      <div class="journey-box cat-member" data-key="copay-deductible">Co-pay &amp; Deductible</div>
-      <div class="journey-box cat-member" data-key="eob">Explanation of Benefits</div>
-      <div class="journey-box cat-both" data-key="reminders-notif">Reminders &amp; Notifications</div>
-      <div class="journey-box cat-member" data-key="eligibility">Eligibility Lookup</div>
-      <div class="journey-box cat-member" data-key="oop-expenses">Out-of-Pocket Expenses &amp; Limits</div>
-    </div>
-  </div>
-
-  <div class="phase-arrow">&#9654;</div>
-
-  <!-- PHASE 3 -->
-  <div class="phase">
-    <div class="phase-header"><span class="phase-label">Patient Discharge</span></div>
-    <div class="phase-items">
-      <div class="journey-box cat-both" data-key="discharge-guidance">Discharge Guidance</div>
-      <div class="journey-box cat-member" data-key="claims-status">Claims Status</div>
-      <div class="journey-box cat-both" data-key="post-visit">Post-visit Follow Up</div>
-      <div class="journey-box cat-member" data-key="claims-adjudication">Claims Adjudication</div>
-    </div>
-  </div>
-
-  <div class="phase-arrow">&#9654;</div>
-
-  <!-- PHASE 4 -->
-  <div class="phase">
-    <div class="phase-header"><span class="phase-label">Recovery &amp; Beyond</span></div>
-    <div class="phase-items">
-      <div class="journey-box cat-both" data-key="rx-refill">Prescription Refill</div>
-    </div>
-  </div>
-
-</div>
-
-<!-- Popup -->
-<div class="popup-overlay" id="popupOverlay">
-  <div class="popup" id="popup">
-    <button class="popup-close" id="popupClose">&times;</button>
-    <div class="popup-header">
-      <div class="popup-phase" id="popupPhase"></div>
-      <div class="popup-title" id="popupTitle"></div>
-    </div>
-    <div class="popup-body" id="popupBody"></div>
-  </div>
+  <div class="tt-body" id="ttBody"></div>
 </div>
 
 <script>
@@ -375,330 +340,315 @@ const data = {
   "provider-search": {
     phase: "Before the Visit",
     title: "Provider Search",
-    html: `
-      <h4>How Kore.ai Helps</h4>
+    html: `<h4>How Kore.ai Helps</h4>
       <p>Kore.ai's conversational AI lets patients find the right provider through natural language — "I need a dermatologist near downtown who takes Blue Cross" — instead of navigating complex directory filters.</p>
       <ul>
         <li>AI-powered search across provider networks by specialty, location, language, and availability</li>
         <li>Real-time insurance network verification so patients only see in-network options</li>
         <li>Seamless handoff to appointment scheduling once a provider is selected</li>
       </ul>
-      <div class="kore-badge">&#9889; Reduces call center volume by up to 40%</div>
-    `
+      <div class="tt-badge">&#9889; Reduces call center volume by up to 40%</div>`
   },
   "id-card": {
     phase: "Before the Visit",
     title: "ID Card Retrieval",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Members can request a digital or physical replacement ID card through a simple chat interaction — no hold times, no portal navigation. The virtual assistant verifies identity and delivers the card instantly.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Members can request a digital or physical replacement ID card through a simple chat interaction — no hold times, no portal navigation.</p>
       <ul>
         <li>Instant digital ID card delivery via chat, SMS, or email</li>
         <li>Automated identity verification using existing member data</li>
         <li>Physical card reorder with address confirmation and tracking</li>
       </ul>
-      <div class="kore-badge">&#9889; #1 most-deflected call type for payers</div>
-    `
+      <div class="tt-badge">&#9889; #1 most-deflected call type for payers</div>`
   },
   "appt-scheduling": {
     phase: "Before the Visit",
     title: "Appointment Scheduling",
-    html: `
-      <h4>How Kore.ai Helps</h4>
+    html: `<h4>How Kore.ai Helps</h4>
       <p>Patients book, reschedule, or cancel appointments through conversational AI across voice, chat, and messaging channels — 24/7, without waiting on hold.</p>
       <ul>
         <li>Integration with EHR/PM systems (Epic, Cerner, athenahealth) for real-time slot availability</li>
-        <li>Multi-turn conversations that handle complex scheduling (e.g., "I need two back-to-back appointments")</li>
+        <li>Multi-turn conversations that handle complex scheduling</li>
         <li>Automatic waitlist management and cancellation backfill</li>
       </ul>
-      <div class="kore-badge">&#9889; 70% of scheduling calls fully automated</div>
-    `
+      <div class="tt-badge">&#9889; 70% of scheduling calls fully automated</div>`
   },
   "answers-support": {
     phase: "Before the Visit",
     title: "Answers & Support",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Kore.ai provides an intelligent FAQ and support layer that handles the long tail of patient questions — from "What should I bring to my appointment?" to "Is my procedure covered?"</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>An intelligent FAQ and support layer handles the long tail of patient questions — from "What should I bring?" to "Is my procedure covered?"</p>
       <ul>
         <li>Knowledge AI draws from plan documents, provider FAQs, and clinical guidelines</li>
         <li>Context-aware responses personalized to the patient's plan and history</li>
         <li>Seamless escalation to a live agent with full conversation context preserved</li>
       </ul>
-      <div class="kore-badge">&#9889; 65% first-contact resolution without agent</div>
-    `
+      <div class="tt-badge">&#9889; 65% first-contact resolution without agent</div>`
   },
   "symptom-triage": {
     phase: "Before the Visit",
     title: "Symptom Triage",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>An AI-guided symptom checker helps patients understand urgency and find the right level of care — ER, urgent care, telehealth, or a scheduled visit — before they leave home.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>An AI-guided symptom checker helps patients understand urgency and find the right level of care — ER, urgent care, telehealth, or a scheduled visit.</p>
       <ul>
         <li>Clinically validated triage algorithms integrated into conversational flows</li>
         <li>Directs patients to appropriate care setting, reducing unnecessary ER visits</li>
-        <li>Captures symptom data that can be forwarded to the provider ahead of the visit</li>
+        <li>Captures symptom data forwarded to the provider ahead of the visit</li>
       </ul>
-      <div class="kore-badge">&#9889; Lowers inappropriate ER utilization by up to 25%</div>
-    `
+      <div class="tt-badge">&#9889; Lowers inappropriate ER utilization by up to 25%</div>`
   },
   "reminders-directions": {
     phase: "Before the Visit",
     title: "Reminders & Directions",
-    html: `
-      <h4>How Kore.ai Helps</h4>
+    html: `<h4>How Kore.ai Helps</h4>
       <p>Automated, personalized reminders via the patient's preferred channel reduce no-shows and ensure patients arrive prepared.</p>
       <ul>
         <li>Multi-channel reminders (SMS, voice, WhatsApp, app push) with one-tap confirm/reschedule</li>
-        <li>Pre-visit instructions (fasting, what to bring, parking directions) included automatically</li>
-        <li>Smart escalation — if a patient hasn't confirmed, the bot follows up or offers to reschedule</li>
+        <li>Pre-visit instructions (fasting, what to bring, parking) included automatically</li>
+        <li>Smart escalation — if unconfirmed, the bot follows up or offers to reschedule</li>
       </ul>
-      <div class="kore-badge">&#9889; Reduces no-show rates by up to 30%</div>
-    `
+      <div class="tt-badge">&#9889; Reduces no-show rates by up to 30%</div>`
   },
   "user-auth": {
     phase: "Before the Visit",
     title: "User Authentication",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Kore.ai provides secure, HIPAA-compliant identity verification built into the conversation — so patients can access their information without friction.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Secure, HIPAA-compliant identity verification built into the conversation — so patients can access their information without friction.</p>
       <ul>
-        <li>Multi-factor authentication via DOB, member ID, last-4 SSN, or biometric voice verification</li>
-        <li>Adaptive authentication — less friction for low-risk requests, stronger verification for sensitive actions</li>
-        <li>Session persistence so patients don't re-verify for every question in a single interaction</li>
+        <li>Multi-factor auth via DOB, member ID, last-4 SSN, or biometric voice verification</li>
+        <li>Adaptive authentication — less friction for low-risk, stronger for sensitive actions</li>
+        <li>Session persistence across a single interaction</li>
       </ul>
-      <div class="kore-badge">&#9889; HIPAA-compliant by design</div>
-    `
+      <div class="tt-badge">&#9889; HIPAA-compliant by design</div>`
   },
   "pre-visit-reg": {
     phase: "Before the Visit",
     title: "Pre-visit Registration",
-    html: `
-      <h4>How Kore.ai Helps</h4>
+    html: `<h4>How Kore.ai Helps</h4>
       <p>Patients complete intake forms, insurance verification, and consent documents conversationally — from home, before they walk in the door.</p>
       <ul>
         <li>Guided conversational intake that populates EHR registration fields automatically</li>
         <li>Insurance card capture via photo with automated OCR and eligibility check</li>
         <li>Digital consent and signature collection compliant with state regulations</li>
       </ul>
-      <div class="kore-badge">&#9889; Cuts front-desk check-in time by 60%</div>
-    `
+      <div class="tt-badge">&#9889; Cuts front-desk check-in time by 60%</div>`
   },
   "coverage-lookup": {
     phase: "After the Visit",
     title: "Coverage Lookup",
-    html: `
-      <h4>How Kore.ai Helps</h4>
+    html: `<h4>How Kore.ai Helps</h4>
       <p>Members ask "Is this covered under my plan?" in plain language and get a clear, personalized answer instantly — no more deciphering plan documents.</p>
       <ul>
-        <li>Natural language understanding of coverage questions mapped to specific plan details</li>
-        <li>Real-time benefits lookup by procedure code, service type, or plain-English description</li>
+        <li>Natural language understanding mapped to specific plan benefit details</li>
+        <li>Real-time benefits lookup by procedure code, service type, or plain description</li>
         <li>Proactive cost estimates before services are rendered</li>
       </ul>
-      <div class="kore-badge">&#9889; Handles 80% of coverage inquiries without an agent</div>
-    `
+      <div class="tt-badge">&#9889; Handles 80% of coverage inquiries without an agent</div>`
   },
   "lab-reports": {
     phase: "After the Visit",
     title: "Lab Reports",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Kore.ai helps providers and patients track, retrieve, and understand lab results through conversational interfaces integrated with LIS and EHR systems.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Patients and providers track, retrieve, and understand lab results through conversational interfaces integrated with LIS and EHR systems.</p>
       <ul>
-        <li>Automated lab result notifications when results are ready, via patient's preferred channel</li>
-        <li>Plain-language explanations of common lab values (e.g., "Your A1C is 6.2 — here's what that means")</li>
-        <li>Secure delivery with authentication, compliant with HIPAA and state privacy laws</li>
+        <li>Automated lab result notifications when results are ready</li>
+        <li>Plain-language explanations of common lab values</li>
+        <li>Secure delivery with authentication, HIPAA-compliant</li>
       </ul>
-      <div class="kore-badge">&#9889; Reduces "where are my results?" calls by 50%</div>
-    `
+      <div class="tt-badge">&#9889; Reduces "where are my results?" calls by 50%</div>`
   },
   "prior-auth": {
     phase: "After the Visit",
     title: "Prior Authorization Support",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Kore.ai streamlines the prior authorization process for providers — automating status checks, form completion, and payer communication to reduce delays in patient care.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Kore.ai streamlines prior authorization for providers — automating status checks, form completion, and payer communication to reduce care delays.</p>
       <ul>
         <li>Automated prior auth submission with intelligent form population from clinical notes</li>
         <li>Real-time status tracking and proactive updates to the provider's office</li>
-        <li>Automated follow-up with payers when authorizations are pending or denied</li>
+        <li>Automated follow-up with payers on pending or denied authorizations</li>
       </ul>
-      <div class="kore-badge">&#9889; Cuts prior auth turnaround from days to hours</div>
-    `
+      <div class="tt-badge">&#9889; Cuts prior auth turnaround from days to hours</div>`
   },
   "copay-deductible": {
     phase: "After the Visit",
     title: "Co-pay & Deductible",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Members get instant, personalized answers to "What's my copay for this visit?" or "How much of my deductible have I met?" — the two most common billing questions.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Members get instant answers to "What's my copay?" or "How much of my deductible have I met?" — the two most common billing questions.</p>
       <ul>
         <li>Real-time deductible and out-of-pocket accumulator lookups</li>
         <li>Copay estimates by service type, provider, and network status</li>
         <li>Proactive payment reminders with easy links to pay online</li>
       </ul>
-      <div class="kore-badge">&#9889; Top 3 call driver for health plans — now automated</div>
-    `
+      <div class="tt-badge">&#9889; Top 3 call driver for health plans — now automated</div>`
   },
   "eob": {
     phase: "After the Visit",
     title: "Explanation of Benefits",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>EOBs are one of the most confusing documents in healthcare. Kore.ai breaks them down conversationally — members ask questions about specific line items and get plain-English answers.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>EOBs are one of the most confusing documents in healthcare. Kore.ai breaks them down conversationally — plain-English answers for each line item.</p>
       <ul>
         <li>Conversational walkthrough of EOB line items: "What is this $350 charge?"</li>
-        <li>Automated delivery of new EOBs with a summary and link to full document</li>
-        <li>Dispute initiation if a charge looks wrong — bot collects details and routes to the right team</li>
+        <li>Automated delivery of new EOBs with summary and link to full document</li>
+        <li>Dispute initiation — bot collects details and routes to the right team</li>
       </ul>
-      <div class="kore-badge">&#9889; Transforms a pain point into a trust-building moment</div>
-    `
+      <div class="tt-badge">&#9889; Transforms a pain point into a trust-building moment</div>`
   },
   "reminders-notif": {
     phase: "After the Visit",
     title: "Reminders & Notifications",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Post-visit reminders keep patients engaged with their care plan — follow-up appointments, medication adherence, and preventive care are all automated.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Post-visit reminders keep patients engaged with their care plan — follow-ups, medication adherence, and preventive care all automated.</p>
       <ul>
         <li>Medication reminders with refill prompts and pharmacy contact info</li>
         <li>Follow-up appointment scheduling triggered by visit type or provider order</li>
-        <li>Preventive care nudges (annual wellness visit, screenings) based on plan eligibility</li>
+        <li>Preventive care nudges (annual wellness, screenings) based on plan eligibility</li>
       </ul>
-      <div class="kore-badge">&#9889; Improves care gap closure rates by 20%</div>
-    `
+      <div class="tt-badge">&#9889; Improves care gap closure rates by 20%</div>`
   },
   "eligibility": {
     phase: "After the Visit",
     title: "Eligibility Lookup",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Both members and providers can verify insurance eligibility in seconds through a conversational interface — eliminating phone trees and fax-based workflows.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Members and providers verify insurance eligibility in seconds — eliminating phone trees and fax-based workflows.</p>
       <ul>
         <li>Real-time 270/271 eligibility transactions via conversational interface</li>
-        <li>Multi-payer eligibility checks for providers seeing patients with different plans</li>
+        <li>Multi-payer eligibility checks for providers with different patient plans</li>
         <li>Automatic member ID correction for common data entry errors</li>
       </ul>
-      <div class="kore-badge">&#9889; Saves 8+ minutes per eligibility check</div>
-    `
+      <div class="tt-badge">&#9889; Saves 8+ minutes per eligibility check</div>`
   },
   "oop-expenses": {
     phase: "After the Visit",
     title: "Out-of-Pocket Expenses & Limits",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Members get real-time visibility into how much they've spent, how close they are to their out-of-pocket max, and what future costs might look like.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Members get real-time visibility into spend, proximity to out-of-pocket max, and projected future costs.</p>
       <ul>
-        <li>Real-time accumulator data showing deductible, OOP, and family vs. individual limits</li>
+        <li>Real-time accumulator data: deductible, OOP, family vs. individual limits</li>
         <li>Predictive cost estimates for upcoming procedures based on plan and network</li>
         <li>Payment plan options surfaced proactively when balances are high</li>
       </ul>
-      <div class="kore-badge">&#9889; Reduces billing-related call volume by 35%</div>
-    `
+      <div class="tt-badge">&#9889; Reduces billing-related call volume by 35%</div>`
   },
   "discharge-guidance": {
     phase: "Patient Discharge",
     title: "Discharge Guidance",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Kore.ai delivers personalized discharge instructions through the patient's preferred channel — reinforcing what was said at bedside when patients are often overwhelmed.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Personalized discharge instructions delivered through the patient's preferred channel — reinforcing bedside guidance when patients are often overwhelmed.</p>
       <ul>
-        <li>Conversational delivery of discharge instructions with teach-back questions to confirm understanding</li>
+        <li>Conversational delivery with teach-back questions to confirm understanding</li>
         <li>Medication lists with dosage, timing, and interaction warnings in plain language</li>
         <li>Red-flag symptom alerts: "Call your doctor immediately if you experience X"</li>
       </ul>
-      <div class="kore-badge">&#9889; Reduces 30-day readmission rates</div>
-    `
+      <div class="tt-badge">&#9889; Reduces 30-day readmission rates</div>`
   },
   "claims-status": {
     phase: "Patient Discharge",
     title: "Claims Status",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>"Where's my claim?" is one of the highest-volume calls for payers. Kore.ai automates the entire lookup — members get real-time status without ever reaching a phone queue.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>"Where's my claim?" is one of the highest-volume calls for payers. Kore.ai automates the entire lookup — real-time status without a phone queue.</p>
       <ul>
-        <li>Real-time claims status lookup by date of service, provider, or claim number</li>
+        <li>Real-time claims status by date of service, provider, or claim number</li>
         <li>Proactive claim status notifications as claims move through adjudication</li>
-        <li>Automated appeal initiation for denied claims with guided information collection</li>
+        <li>Automated appeal initiation for denied claims with guided info collection</li>
       </ul>
-      <div class="kore-badge">&#9889; #2 call driver — automates 75% of inquiries</div>
-    `
+      <div class="tt-badge">&#9889; #2 call driver — automates 75% of inquiries</div>`
   },
   "post-visit": {
     phase: "Patient Discharge",
     title: "Post-visit Follow Up",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Automated post-visit outreach checks on patient recovery, captures satisfaction data, and ensures care plan adherence — at scale.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Automated post-visit outreach checks on recovery, captures satisfaction data, and ensures care plan adherence — at scale.</p>
       <ul>
         <li>Automated check-in messages 24-72 hours post-visit or post-discharge</li>
         <li>Symptom monitoring with escalation to clinical staff if red flags appear</li>
-        <li>Patient satisfaction surveys embedded in the conversation, not sent as separate links</li>
+        <li>Patient satisfaction surveys embedded in the conversation</li>
       </ul>
-      <div class="kore-badge">&#9889; Boosts CAHPS scores through consistent outreach</div>
-    `
+      <div class="tt-badge">&#9889; Boosts CAHPS scores through consistent outreach</div>`
   },
   "claims-adjudication": {
     phase: "Patient Discharge",
     title: "Claims Adjudication",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Kore.ai assists payer operations teams by automating routine claims adjudication inquiries and providing intelligent routing for complex cases.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Kore.ai assists payer operations by automating routine claims adjudication inquiries and intelligently routing complex cases.</p>
       <ul>
-        <li>Automated first-pass adjudication support using AI to flag anomalies and missing info</li>
+        <li>Automated first-pass adjudication using AI to flag anomalies and missing info</li>
         <li>Provider-facing bot for claims correction and resubmission guidance</li>
         <li>Internal agent assist that surfaces relevant policy rules during manual review</li>
       </ul>
-      <div class="kore-badge">&#9889; Accelerates clean claim rates and reduces rework</div>
-    `
+      <div class="tt-badge">&#9889; Accelerates clean claim rates and reduces rework</div>`
   },
   "rx-refill": {
     phase: "Recovery & Beyond",
     title: "Prescription Refill",
-    html: `
-      <h4>How Kore.ai Helps</h4>
-      <p>Patients request prescription refills through a simple conversational flow — the bot verifies the medication, checks refill eligibility, and routes to the pharmacy or provider as needed.</p>
+    html: `<h4>How Kore.ai Helps</h4>
+      <p>Patients request prescription refills through a simple conversational flow — the bot verifies the medication, checks refill eligibility, and routes appropriately.</p>
       <ul>
         <li>Conversational refill requests integrated with pharmacy and PBM systems</li>
         <li>Automated refill reminders before patients run out of medication</li>
         <li>Mail-order pharmacy enrollment and 90-day supply options surfaced proactively</li>
         <li>Medication adherence tracking with gentle nudges for chronic conditions</li>
       </ul>
-      <div class="kore-badge">&#9889; Improves medication adherence and Star Ratings</div>
-    `
+      <div class="tt-badge">&#9889; Improves medication adherence and Star Ratings</div>`
   }
 };
 
-// Event handling
-document.querySelectorAll('.journey-box').forEach(box => {
-  box.addEventListener('click', () => {
+// Tooltip logic
+const tooltip = document.getElementById('tooltip');
+const ttPhase = document.getElementById('ttPhase');
+const ttTitle = document.getElementById('ttTitle');
+const ttBody = document.getElementById('ttBody');
+let hideTimeout = null;
+
+document.querySelectorAll('.box').forEach(box => {
+  box.addEventListener('mouseenter', (e) => {
+    clearTimeout(hideTimeout);
     const key = box.dataset.key;
     const item = data[key];
     if (!item) return;
 
-    document.getElementById('popupPhase').textContent = item.phase;
-    document.getElementById('popupTitle').textContent = item.title;
-    document.getElementById('popupBody').innerHTML = item.html;
-    document.getElementById('popupOverlay').classList.add('visible');
+    ttPhase.textContent = item.phase;
+    ttTitle.textContent = item.title;
+    ttBody.innerHTML = item.html;
+    tooltip.classList.add('visible');
 
-    document.querySelectorAll('.journey-box').forEach(b => b.classList.remove('active'));
-    box.classList.add('active');
+    positionTooltip(box);
+  });
+
+  box.addEventListener('mouseleave', () => {
+    hideTimeout = setTimeout(() => {
+      tooltip.classList.remove('visible');
+    }, 80);
   });
 });
 
-document.getElementById('popupOverlay').addEventListener('click', (e) => {
-  if (e.target === document.getElementById('popupOverlay')) closePopup();
-});
+function positionTooltip(box) {
+  const rect = box.getBoundingClientRect();
+  const ttW = 340;
+  const ttH = tooltip.offsetHeight || 350;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
 
-document.getElementById('popupClose').addEventListener('click', closePopup);
+  let left, top;
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closePopup();
-});
+  // Try right side first
+  if (rect.right + 12 + ttW < vw) {
+    left = rect.right + 12;
+  }
+  // Try left side
+  else if (rect.left - 12 - ttW > 0) {
+    left = rect.left - 12 - ttW;
+  }
+  // Fallback: center below
+  else {
+    left = Math.max(8, Math.min(vw - ttW - 8, rect.left + rect.width / 2 - ttW / 2));
+  }
 
-function closePopup() {
-  document.getElementById('popupOverlay').classList.remove('visible');
-  document.querySelectorAll('.journey-box').forEach(b => b.classList.remove('active'));
+  // Vertical: center aligned with box, clamped to viewport
+  top = rect.top + rect.height / 2 - ttH / 2;
+  top = Math.max(8, Math.min(vh - ttH - 8, top));
+
+  tooltip.style.left = left + 'px';
+  tooltip.style.top = top + 'px';
 }
 </script>
 
